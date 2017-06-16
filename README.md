@@ -9,7 +9,7 @@ This repository contains utility functions and collection implementations for IB
 * [HashMap](QRPGLESRC/HASHMAP.RPGLE)
 
 ## Authors
-* Edoardo Luppi - Test
+* Edoardo Luppi
 
 ## Acknowledgments
 Thanks to [Mihael Schmidt](https://github.com/OSSILE) and to the StackOverflow community.

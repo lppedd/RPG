@@ -31,7 +31,7 @@
 
        dcl-c ARRAY_SIZE %size(arrayTpl);
        dcl-c ENTRY_SIZE %size(entryTpl);
-       dcl-c DEFAULT_SIZE 10;
+       dcl-c DEFAULT_SIZE 16;
 
       /include le/qcopysrc,memcpy
       /include le/qcopysrc,quicksort

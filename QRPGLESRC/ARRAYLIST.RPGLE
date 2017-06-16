@@ -1,9 +1,33 @@
        //***********************************************************************
-       // Un'implementazione di Arraylist (tratto da Java) in ILE RPG.
+       // MIT License
+       //
+       // Copyright (c) 2017 Edoardo Luppi
+       //
+       // Permission is hereby granted, free of charge, to any person obtaining a copy
+       // of this software and associated documentation files (the "Software"), to deal
+       // in the Software without restriction, including without limitation the rights
+       // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+       // copies of the Software, and to permit persons to whom the Software is
+       // furnished to do so, subject to the following conditions:
+       //
+       // The above copyright notice and this permission notice shall be included in all
+       // copies or substantial portions of the Software.
+       //
+       // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+       // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+       // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+       // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+       // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+       // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+       // SOFTWARE.
+       //
+       // Original idea by Mihael Schmidt.
+       // https://github.com/OSSILE
        //
        // @author Edoardo Luppi
+       // @description RPG implementation of an ArrayList
        //***********************************************************************
-       ctl-opt nomain option(*srcstmt) bnddir('QC2LE');
+       ctl-opt nomain option(*srcstmt) bnddir('QC2LE':'UTILS');
 
        dcl-c ARRAY_SIZE %size(arrayTpl);
        dcl-c ENTRY_SIZE %size(entryTpl);
@@ -67,7 +91,7 @@
 
          if (arrayPtr <> *null);
            arrayClear(arrayPtr);
-           dealloc(n) arrayPtr;
+           deallocSpace(arrayPtr);
          endif;
 
        end-proc;
@@ -136,7 +160,7 @@
          dcl-s allocatedSize uns(10) inz;
 
          if (array.size = 0);
-           dealloc(n) array.data;
+           deallocSpace(array.data);
          else;
            allocSpace(array.data:ENTRY_SIZE * array.size);
          endif;
@@ -163,7 +187,7 @@
            disposeEntryObject(arrayPtr:i);
          endfor;
 
-         dealloc(n) array.data;
+         deallocSpace(array.data);
          array.size = 0;
          array.allocatedSize = 0;
 
@@ -290,6 +314,7 @@
          dcl-ds array likeds(arrayTpl) based(arrayPtr);
          dcl-ds fromArray likeds(arrayTpl) based(fromArrayPtr);
          dcl-s index_ uns(10) inz;
+         dcl-s fromArraySize uns(10) inz;
 
          array.allocatedSize += fromArray.allocatedSize;
          allocSpace(array.data:ENTRY_SIZE * array.allocatedSize);
@@ -298,7 +323,7 @@
            index_ = index;
            moveEntries(arrayPtr:index_:fromArray.size);
          else;
-           index_ = array.size;
+           index_ = array.size + 1;
          endif;
 
          memcpy(
@@ -306,6 +331,8 @@
             fromArray.data:
             ENTRY_SIZE * fromArray.size
          );
+
+         array.size += fromArray.size;
 
        end-proc;
 
@@ -488,14 +515,14 @@
          entryPtr = getEntry(arrayPtr:index);
 
          if (entry.objectPtr <> *null);
-           dealloc(n) entry.objectPtr;
+           deallocSpace(entry.objectPtr);
          endif;
 
        end-proc;
 
        //***********************************************************************
        // moveEntries
-       //    IMPORTANTE: non aggiornare la dimensione dell'array qui dentro.
+       //    IMPORTANT: do not update the size of the array here!
        //***********************************************************************
        dcl-proc moveEntries;
 
@@ -570,7 +597,7 @@
               bytesToCopy
            );
 
-           dealloc(n) tempPtr;
+           deallocSpace(tempPtr);
 
          endsr;
 

@@ -11,8 +11,8 @@ This repository contains utility functions and collection implementations for IB
 ## Authors
 * Edoardo Luppi - [LinkedIn](https://www.linkedin.com/in/lppedd/)
 
-## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
 ## Acknowledgments
 Thanks to [Mihael Schmidt](https://github.com/OSSILE) and to the StackOverflow community.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.

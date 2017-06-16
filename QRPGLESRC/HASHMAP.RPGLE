@@ -199,28 +199,59 @@
            keySize uns(10) const;
          end-pi;
 
-         dcl-ds hashMap likeds(hashMapTpl) based(hashMapPtr);
-         dcl-ds bucket likeds(bucketTpl) based(bucketPtr);
          dcl-ds entry likeds(entryTpl) based(entryPtr);
-         dcl-s bucketPtr pointer inz(*null);
          dcl-s entryPtr pointer inz(*null);
-         dcl-s hashCode zoned(63) inz;
-         dcl-s bucketIndex uns(10) inz;
 
-         hashCode = getHashCode(keyPtr:keySize);
-         bucketIndex = getBucketIndex(hashCode:hashMap.allocatedSize);
-         bucketPtr = getBucket(hashMap.bucketsPtr:bucketIndex);
-         entryPtr = bucket.entryPtr;
+         entryPtr = hashMapGetEntry(hashMapPtr:keyPtr:keySize);
 
-         dow (entryPtr <> *null);
-           if (entry.hashCode = hashCode);
-             return entry.valuePtr;
-           endif;
+         if (entryPtr = *null);
+           return *null;
+         endif;
 
-           entryPtr = entry.nextEntryPtr;
-         enddo;
+         return entry.valuePtr;
 
-         return *null;
+       end-proc;
+
+       //***********************************************************************
+       // hashMapGetSS
+       //***********************************************************************
+       dcl-proc hashMapGetSS export;
+
+         dcl-pi *n varchar(32767);
+           hashMapPtr pointer const;
+           key varchar(32767) value;
+         end-pi;
+
+         dcl-ds entry likeds(entryTpl) based(entryPtr);
+         dcl-s entryPtr pointer inz(*null);
+
+         entryPtr = hashMapGetEntry(hashMapPtr:%addr(key:*data):%len(key));
+
+         return %str(entry.valuePtr:entry.valueSize);
+
+       end-proc;
+
+       //***********************************************************************
+       // hashMapGetNN
+       //***********************************************************************
+       dcl-proc hashMapGetNN export;
+
+         dcl-pi *n packed(22:7);
+           hashMapPtr pointer const;
+           key packed(22:7) value;
+         end-pi;
+
+         dcl-ds entry likeds(entryTpl) based(entryPtr);
+         dcl-s entryPtr pointer inz(*null);
+         dcl-s packedValue packed(22:7) based(entry.valuePtr);
+
+         entryPtr = hashMapGetEntry(hashMapPtr:%addr(key):%size(key));
+
+         if (entryPtr = *null);
+           return *loval;
+         endif;
+
+         return packedValue;
 
        end-proc;
 
@@ -250,7 +281,8 @@
            valueSize uns(10) const;
          end-pi;
 
-         // TODO
+         // todo
+         return *off;
 
        end-proc;
 
@@ -291,6 +323,42 @@
 
            entryPtr = entry.nextEntryPtr;
          enddo;
+
+       end-proc;
+
+       //***********************************************************************
+       // hashMapGetEntry
+       //***********************************************************************
+       dcl-proc hashMapGetEntry;
+
+         dcl-pi *n pointer;
+           hashMapPtr pointer const;
+           keyPtr pointer const;
+           keySize uns(10) const;
+         end-pi;
+
+         dcl-ds hashMap likeds(hashMapTpl) based(hashMapPtr);
+         dcl-ds bucket likeds(bucketTpl) based(bucketPtr);
+         dcl-ds entry likeds(entryTpl) based(entryPtr);
+         dcl-s hashCode zoned(63) inz;
+         dcl-s bucketIndex uns(10) inz;
+         dcl-s bucketPtr pointer inz(*null);
+         dcl-s entryPtr pointer inz(*null);
+
+         hashCode = getHashCode(keyPtr:keySize);
+         bucketIndex = getBucketIndex(hashCode:hashMap.allocatedSize);
+         bucketPtr = getBucket(hashMap.bucketsPtr:bucketIndex);
+         entryPtr = bucket.entryPtr;
+
+         dow (entryPtr <> *null);
+           if (entry.hashCode = hashCode);
+             return entryPtr;
+           endif;
+
+           entryPtr = entry.nextEntryPtr;
+         enddo;
+
+         return *null;
 
        end-proc;
 

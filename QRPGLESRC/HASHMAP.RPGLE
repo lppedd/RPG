@@ -189,6 +189,44 @@
        end-proc;
 
        //***********************************************************************
+       // hashMapPutSS
+       //***********************************************************************
+       dcl-proc hashMapPutSS export;
+
+         dcl-pi *n;
+           hashMapPtr pointer const;
+           numericKey varchar(32767) value;
+           numericValue varchar(32767) value;
+         end-pi;
+
+         hashMapPut(
+            hashMapPtr:
+            %addr(numericKey):%len(numericKey):
+            %addr(numericValue):%len(numericValue)
+         );
+
+       end-proc;
+
+       //***********************************************************************
+       // hashMapPutNN
+       //***********************************************************************
+       dcl-proc hashMapPutNN export;
+
+         dcl-pi *n;
+           hashMapPtr pointer const;
+           numericKey packed(22:7) value;
+           numericValue packed(22:7) value;
+         end-pi;
+
+         hashMapPut(
+            hashMapPtr:
+            %addr(numericKey):%size(numericKey):
+            %addr(numericValue):%size(numericValue)
+         );
+
+       end-proc;
+
+       //***********************************************************************
        // hashMapGet
        //***********************************************************************
        dcl-proc hashMapGet export;

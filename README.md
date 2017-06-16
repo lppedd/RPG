@@ -2,11 +2,11 @@
 This repository contains utility functions and collection implementations for IBM i.
 
 ## Collections
-* ArrayList
-* LinkedList
+* [ArrayList](QRPGLESRC/ARRAYLIST.RPGLE)
+* [LinkedList](QRPGLESRC/LINKEDLIST.RPGLE)
 
 ## Maps
-* HashMap
+* [HashMap](QRPGLESRC/HASHMAP.RPGLE)
 
 ## Authors
 * Edoardo Luppi

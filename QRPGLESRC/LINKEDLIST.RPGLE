@@ -32,8 +32,8 @@
        dcl-c LIST_SIZE %size(listTpl);
        dcl-c NODE_SIZE %size(nodeTpl);
 
-      /include le/qcopysrc,memcpy
-      /include le/qcopysrc,utils
+      /include qcopysrc,memcpy
+      /include qcopysrc,utils
 
        dcl-ds listTpl qualified template;
          firstNodePtr pointer;

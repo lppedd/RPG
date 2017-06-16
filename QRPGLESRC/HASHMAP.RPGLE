@@ -31,8 +31,8 @@
        dcl-c ENTRY_SIZE %size(entryTpl);
        dcl-c LOAD_FACTOR 0.72;
 
-      /include le/qcopysrc,memcpy
-      /include le/qcopysrc,utils
+      /include qcopysrc,memcpy
+      /include qcopysrc,utils
 
        dcl-ds hashMapTpl qualified template;
          bucketsPtr pointer;

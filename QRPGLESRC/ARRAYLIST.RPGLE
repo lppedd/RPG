@@ -33,9 +33,9 @@
        dcl-c ENTRY_SIZE %size(entryTpl);
        dcl-c DEFAULT_SIZE 16;
 
-      /include le/qcopysrc,memcpy
-      /include le/qcopysrc,quicksort
-      /include le/qcopysrc,utils
+      /include qcopysrc,memcpy
+      /include qcopysrc,quicksort
+      /include qcopysrc,utils
 
        dcl-ds arrayTpl qualified template align;
          data pointer;

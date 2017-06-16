@@ -9,7 +9,7 @@ This repository contains utility functions and collection implementations for IB
 * [HashMap](QRPGLESRC/HASHMAP.RPGLE)
 
 ## Authors
-* Edoardo Luppi
+* Edoardo Luppi - [LinkedIn](https://www.linkedin.com/in/lppedd/)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

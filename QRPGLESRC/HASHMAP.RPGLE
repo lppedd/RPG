@@ -195,14 +195,14 @@
 
          dcl-pi *n;
            hashMapPtr pointer const;
-           numericKey varchar(32767) value;
-           numericValue varchar(32767) value;
+           stringKey varchar(32767) value;
+           stringValue varchar(32767) value;
          end-pi;
 
          hashMapPut(
             hashMapPtr:
-            %addr(numericKey):%len(numericKey):
-            %addr(numericValue):%len(numericValue)
+            %addr(stringKey):%len(stringKey):
+            %addr(stringValue):%len(stringValue)
          );
 
        end-proc;

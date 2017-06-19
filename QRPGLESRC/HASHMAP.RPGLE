@@ -32,6 +32,7 @@
        dcl-c LOAD_FACTOR 0.72;
 
       /include qcopysrc,memcpy
+      /include qcopysrc,memcmp
       /include qcopysrc,utils
 
        dcl-ds hashMapTpl qualified template;
@@ -201,8 +202,8 @@
 
          hashMapPut(
             hashMapPtr:
-            %addr(stringKey):%len(stringKey):
-            %addr(stringValue):%len(stringValue)
+            %addr(stringKey:*data):%len(stringKey):
+            %addr(stringValue:*data):%len(stringValue)
          );
 
        end-proc;
@@ -319,7 +320,26 @@
            valueSize uns(10) const;
          end-pi;
 
-         // todo
+         dcl-ds hashMap likeds(hashMapTpl) based(hashMapPtr);
+         dcl-ds bucket likeds(bucketTpl) based(bucketPtr);
+         dcl-ds entry likeds(entryTpl) based(entryPtr);
+         dcl-s bucketPtr pointer inz(*null);
+         dcl-s entryPtr pointer inz(*null);
+         dcl-s i uns(10) inz;
+
+         for i = 1 to hashMap.allocatedSize;
+           bucketPtr = getBucket(hashMap.bucketsPtr:i);
+           entryPtr = bucket.entryPtr;
+
+           dow (entryPtr <> *null);
+             if (memcmp(entry.valuePtr:valuePtr:valueSize) = 0);
+               return *on;
+             endif;
+
+             entryPtr = entry.nextEntryPtr;
+           enddo;
+         endfor;
+
          return *off;
 
        end-proc;

@@ -313,26 +313,21 @@
 
          dcl-ds array likeds(arrayTpl) based(arrayPtr);
          dcl-ds fromArray likeds(arrayTpl) based(fromArrayPtr);
-         dcl-s index_ uns(10) inz;
-         dcl-s fromArraySize uns(10) inz;
-
-         array.allocatedSize += fromArray.allocatedSize;
-         allocSpace(array.data:ENTRY_SIZE * array.allocatedSize);
+         dcl-ds entry likeds(entryTpl) based(entryPtr);
+         dcl-s entryPtr pointer inz(*null);
+         dcl-s i uns(10) inz;
 
          if (%parms > 2);
-           index_ = index;
-           moveEntries(arrayPtr:index_:fromArray.size);
+           for i = fromArray.size downto 1;
+             entryPtr = getEntry(fromArrayPtr:i);
+             arrayAdd(arrayPtr:entry.objectPtr:entry.objectSize:index);
+           endfor;
          else;
-           index_ = array.size + 1;
+           for i = 1 to fromArray.size;
+             entryPtr = getEntry(fromArrayPtr:i);
+             arrayAdd(arrayPtr:entry.objectPtr:entry.objectSize);
+           endfor;
          endif;
-
-         memcpy(
-            array.data + (ENTRY_SIZE * (index_ - 1)):
-            fromArray.data:
-            ENTRY_SIZE * fromArray.size
-         );
-
-         array.size += fromArray.size;
 
        end-proc;
 

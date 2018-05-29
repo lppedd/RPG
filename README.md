@@ -8,6 +8,9 @@ This repository contains utility functions and collection implementations for IB
 ## Maps
 * [HashMap](QRPGLESRC/HASHMAP.RPGLE)
 
+## Sets
+* [HashSet](QRPGLESRC/HASHSET.RPGLE)
+
 ## Authors
 * Edoardo Luppi
 
